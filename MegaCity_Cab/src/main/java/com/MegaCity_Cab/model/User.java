@@ -1,4 +1,4 @@
-package com.Megacity_Cab.model;
+package com.MegaCity_Cab.model;
 
 public class User {
 	public enum Role { USER, RIDER, ADMIN;

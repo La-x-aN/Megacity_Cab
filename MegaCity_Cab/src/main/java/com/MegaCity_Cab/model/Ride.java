@@ -1,4 +1,4 @@
-package com.Megacity_Cab.model;
+package com.MegaCity_Cab.model;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

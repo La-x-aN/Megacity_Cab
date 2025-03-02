@@ -1,11 +1,11 @@
-<%@ page import="com.megacityCab.dao.RiderDAO" %>
-<%@ page import="com.megacityCab.model.Rider" %>
-<%@ page import="com.megacityCab.model.User" %>
-<%@ page import="com.megacityCab.dao.RideDAO" %>
-<%@ page import="com.megacityCab.model.Ride" %>
+<%@ page import="com.MegaCity_Cab.dao.RiderDAO" %>
+<%@ page import="com.MegaCity_Cab.model.Rider" %>
+<%@ page import="com.MegaCity_Cab.model.User" %>
+<%@ page import="com.MegaCity_Cab.dao.RideDAO" %>
+<%@ page import="com.MegaCity_Cab.model.Ride" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.megacityCab.model.User.Role" %>
+<%@ page import="com.MegaCity_Cab.model.User.Role" %>
 
 
 <%
@@ -33,7 +33,7 @@ request.setAttribute("assignedRides", assignedRides);
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rider Dashboard</title>
+    <title>Rider_Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
