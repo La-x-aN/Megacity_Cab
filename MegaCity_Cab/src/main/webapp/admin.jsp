@@ -1,10 +1,10 @@
-<%@page import="com.megacityCab.model.User.Role"%>
+<%@page import="com.MegaCity_Cab.model.User.Role"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="com.megacityCab.model.User" %>
-<%@ page import="com.megacityCab.dao.RideDAO" %>
-<%@ page import="com.megacityCab.dao.RiderDAO" %>
-<%@ page import="com.megacityCab.model.Ride" %>
-<%@ page import="com.megacityCab.model.Rider" %>
+<%@ page import="com.MegaCity_Cab.model.User" %>
+<%@ page import="com.MegaCity_Cab.dao.RideDAO" %>
+<%@ page import="com.MegaCity_Cab.dao.RiderDAO" %>
+<%@ page import="com.MegaCity_Cab.model.Ride" %>
+<%@ page import="com.MegaCity_Cab.model.Rider" %>
 <%@ page import="java.util.List" %>
 
 
@@ -25,11 +25,11 @@ if(user == null || user.getRole() != Role.ADMIN) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Dashboard</title>
+    <title>Admin_Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
-    <h1>Welcome Admin: <%= user.getName() %></h1>
+    <h1>Welcome_Admin: <%= user.getName() %></h1>
     <a href="login.jsp">Logout</a>
     
 <div class="admin-rides">

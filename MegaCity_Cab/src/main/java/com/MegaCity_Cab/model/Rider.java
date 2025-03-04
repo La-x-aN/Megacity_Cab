@@ -1,4 +1,4 @@
-package com.Megacity_Cab.model;
+package com.MegaCity_Cab.model;
 
 public class Rider {
     private int riderId;
@@ -7,7 +7,7 @@ public class Rider {
     private String vehicleModel;
     private String vehicleNumber;
 
-    // Getters and Setters
+   
     public int getRiderId() { return riderId; }
     public void setRiderId(int riderId) { this.riderId = riderId; }
     public int getUserId() { return userId; }
