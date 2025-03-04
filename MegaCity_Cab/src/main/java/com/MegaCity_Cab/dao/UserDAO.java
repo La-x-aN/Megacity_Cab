@@ -3,7 +3,8 @@ package com.MegaCity_Cab.dao;
 import com.MegaCity_Cab.model.User;
 import com.MegaCity_Cab.utils.DBUtil;
 import java.sql.*;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     
@@ -62,10 +63,42 @@ public class UserDAO {
                 user.setPhone(rs.getString("phone"));
                 user.setEmail(rs.getString("email"));
                 user.setPasswordHash(rs.getString("password_hash"));
-                user.setRole(rs.getString("role"));
+                user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase()));
                 return user;
             }
             return null; // No user found
         }
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        try (Connection conn = DBUtil.getConnection();
+             Statement stmt = conn.createStatement()) {
+            
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setNic(rs.getString("nic"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+               
+                user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase())); 
+                try {
+                    user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase()));
+                } catch (IllegalArgumentException e) {
+                    user.setRole(User.Role.USER); // Default to USER
+                    System.err.println("Invalid role in DB: " + rs.getString("role"));
+                }
+                
+                // FIXED: Add user to list
+                users.add(user); 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 }

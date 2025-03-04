@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/RiderDashboard")
+@WebServlet("/riderDashboard")
 public class RiderDashboardServlet extends HttpServlet {
     /**
 	 * 
@@ -25,10 +25,10 @@ public class RiderDashboardServlet extends HttpServlet {
 	            return;
 	        }
 	    User user = (User) session.getAttribute("user");
-        	if (!user.getRole().equalsIgnoreCase("RIDER")) {
-            response.sendRedirect("login.jsp?error=unauthorized");
-            return;
-        }
+	    	if (user.getRole() != User.Role.RIDER) { 
+	        response.sendRedirect("login.jsp?error=unauthorized");
+	        return;
+	    	}
 	    try {
             RideDAO rideDAO = new RideDAO();
             List<Ride> assignedRides = rideDAO.getRidesByRider(user.getId());

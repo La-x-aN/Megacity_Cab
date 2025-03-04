@@ -12,10 +12,10 @@
         <form action="register" method="post">
             <div class="role-selection">
                 <label>
-                    <input type="radio" name="role" value="user" id="user" checked> User
+                    <input type="radio" name="role" value="USER" id="user" checked> User
                 </label>
                 <label>
-                    <input type="radio" name="role" value="rider" id="rider"> Rider
+                    <input type="radio" name="role" value="Rider" id="rider"> Rider
                 </label>
             </div>
 

@@ -93,13 +93,13 @@ public class RideDAO {
             System.err.println("Invalid status value in DB: " + statusStr);
         	}
 
-        // Handle timestamps with null checks
+       
      
         ride.setScheduledTime(rs.getTimestamp("scheduled_time").toLocalDateTime());
 
-        // For nullable fields like deadline_time
+        
         Timestamp deadlineTimestamp = rs.getTimestamp("deadline_time");
-        if (!rs.wasNull()) { // Explicit null check for database NULL values
+        if (!rs.wasNull()) { 
          ride.setDeadlineTime(deadlineTimestamp.toLocalDateTime());
         }
 
