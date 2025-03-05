@@ -34,6 +34,7 @@ public class BookRideServlet extends HttpServlet {
         String pickup = request.getParameter("pickup");
         String destination = request.getParameter("destination");
         String scheduledTimeStr = request.getParameter("scheduledTime");
+        String distanceStr = request.getParameter("distance");
 
         // Validate inputs
         if (scheduledTimeStr == null || scheduledTimeStr.isEmpty()) {
@@ -43,7 +44,11 @@ public class BookRideServlet extends HttpServlet {
 
         try {
         	LocalDateTime scheduledTime = LocalDateTime.parse(request.getParameter("scheduledTime") );
+        	double distance = Double.parseDouble(distanceStr);
             Ride ride = new Ride();
+            
+            ride.setDistance(distance);
+            ride.calculateCost();
             ride.setUserId(user.getId());
             ride.setPickupLocation(pickup);
             ride.setDestination(destination);
@@ -54,6 +59,8 @@ public class BookRideServlet extends HttpServlet {
             } else {
             	response.sendRedirect("userDashboard?error=creation_failed");
             }
+        } catch (NumberFormatException e) {
+            response.sendRedirect("userDashboard?error=invalid_distance");
         } catch (DateTimeParseException e) {
         	response.sendRedirect("userDashboard?error=invalid_time_format");
         } catch (Exception e) {

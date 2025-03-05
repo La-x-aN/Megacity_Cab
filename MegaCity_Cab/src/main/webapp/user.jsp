@@ -36,6 +36,10 @@
                        required
                        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
             </div>
+            <div class="form-group">
+    			<label>Distance (km):</label>
+    			<input type="number" name="distance" step="0.1" required>
+			</div>
 
             <c:if test="${not empty param.error}">
                 <div class="alert error">
@@ -61,6 +65,8 @@
             <tr>
                 <th>Pickup</th>
                 <th>Destination</th>
+                 <th>Distance (km)</th>
+        		<th>Cost</th>
                 <th>Scheduled Time</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -69,6 +75,8 @@
                 <tr>
                     <td><c:out value="${ride.pickupLocation}"/></td>
                     <td><c:out value="${ride.destination}"/></td>
+                    <td><fmt:formatNumber value="${ride.distance}" pattern="#0.0"/></td>
+            		<td>$<fmt:formatNumber value="${ride.cost}" pattern="#0.00"/></td>
                     <td>
                         <fmt:formatDate value="${ride.scheduledTimeAsDate}" 
                                       pattern="yyyy-MM-dd HH:mm" />

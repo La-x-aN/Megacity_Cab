@@ -10,7 +10,7 @@ public class RideDAO {
    
 
 	public boolean createRide(Ride ride) throws Exception {
-        String sql = "INSERT INTO rides (user_id, pickup_location, destination, scheduled_time) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO rides (user_id, pickup_location, destination, scheduled_time, distance, cost) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
@@ -18,6 +18,8 @@ public class RideDAO {
             stmt.setString(2, ride.getPickupLocation());
             stmt.setString(3, ride.getDestination());
             stmt.setTimestamp(4, Timestamp.valueOf(ride.getScheduledTime()));
+            stmt.setDouble(5, ride.getDistance());
+            stmt.setDouble(6, ride.getCost());
             
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -82,6 +84,8 @@ public class RideDAO {
         ride.setUserId(rs.getInt("user_id"));
         ride.setPickupLocation(rs.getString("pickup_location"));
         ride.setDestination(rs.getString("destination"));
+        ride.setDistance(rs.getDouble("distance"));
+        ride.setCost(rs.getDouble("cost"));
         
 
         // Convert String to Status enum

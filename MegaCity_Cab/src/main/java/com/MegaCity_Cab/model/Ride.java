@@ -18,6 +18,8 @@ public class Ride {
     private Status status;
     private LocalDateTime scheduledTime;
     private LocalDateTime deadlineTime;
+    private double distance;  
+    private double cost;
     
 
  
@@ -57,6 +59,9 @@ public class Ride {
     public void setDeadlineTime(LocalDateTime deadlineTime) { 
         this.deadlineTime = deadlineTime; 
     }
+    
+    public double getDistance() { return distance; }
+    public void setDistance(double distance) { this.distance = distance; }
 
     public boolean isEditable() {
         return status == Status.REQUESTED 
@@ -68,6 +73,18 @@ public class Ride {
             scheduledTime.atZone(ZoneId.systemDefault()).toInstant()
         );
     }
+    
+    public double calculateCost() {
+        double baseFare = 45.00;
+        double ratePerKm = 16.00;
+        return baseFare + (distance * ratePerKm);
+    }
+	public double getCost() {
+		return cost;
+	}
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
 
 	
 }
