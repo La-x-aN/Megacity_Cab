@@ -72,50 +72,63 @@ button:hover {
     color: #28a745;
 }
 
-.vehicleDetails {
-    margin: 20px auto; 
+#vehicleDetails {
+    width: 60%;
+    margin: 20px 0;
     border-collapse: collapse;
-    width: 80%;
-    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
-/* table {
-	margin-left: 200px;
+#vehicleDetails th {
+    background-color: #3498db;
+    color: white;
+    padding: 15px;
+    text-align: left;
 }
 
-th, td {
-    border: 1px solid black; 
-    padding: 10px;
+#vehicleDetails td {
+    padding: 12px;
+    background-color: white;
+    border-bottom: 1px solid #ecf0f1;
 }
-
-th {
-    background-color: #4CAF50; 
-}
-        
-td {
-    background-color: #333;
-    color: white;  Optional: 
-} */
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 5% auto;
-    padding: 100px;
-    border: 1px solid #888;
-    width: 50%;
+.rider-rides {
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
     border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+.rider-rides table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.rider-rides th {
+    background-color: #34495e;
+    color: white;
+    padding: 15px;
+    text-align: left;
+}
+
+.rider-rides td {
+    padding: 12px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.rider-rides tr:hover {
+    background-color: #f9f9f9;
+}
+
+.rider-rides tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+
+
+
+
 
 .close {
     color: #aaa;

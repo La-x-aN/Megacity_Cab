@@ -16,7 +16,7 @@
 </head>
 <body>
     <h1>Welcome User: <c:out value="${sessionScope.user.name}"/></h1>
-    <a href="logout">Logout</a>
+    <a href="${pageContext.request.contextPath}/logout">Logout</a>
     
     <div class="booking-section">
         <h2>Book a Ride</h2>

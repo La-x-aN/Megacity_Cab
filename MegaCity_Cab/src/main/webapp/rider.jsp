@@ -12,7 +12,7 @@
 <html>
 <head>
     <title>Rider-Dashboard</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+    <link rel="stylesheet" href="/MegaCity_Cab/css/styles.css">
 </head>
 <body>
     <c:if test="${empty sessionScope.user || sessionScope.user.role ne 'RIDER'}">
@@ -67,6 +67,6 @@
         </table>
     </div>
     
-    <a href="login.jsp">Logout</a>
+    <a href="${pageContext.request.contextPath}/logout">Logout</a>
 </body>
 </html>

@@ -108,7 +108,7 @@
             <div class="admin-name">
                 ADMIN: <c:out value="${sessionScope.user.name}"/>
             </div>
-            <a href="login.jsp" class="logout-link">Logout</a>
+            <a href="${pageContext.request.contextPath}/logout" class="logout-link">Logout</a>
         </div>
     </div>
 

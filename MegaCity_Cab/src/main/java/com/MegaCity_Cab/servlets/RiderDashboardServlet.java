@@ -1,7 +1,9 @@
 package com.MegaCity_Cab.servlets;
 
 import com.MegaCity_Cab.dao.RideDAO;
+import com.MegaCity_Cab.dao.RiderDAO;
 import com.MegaCity_Cab.model.Ride;
+import com.MegaCity_Cab.model.Rider;
 import com.MegaCity_Cab.model.User;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -19,24 +21,28 @@ public class RiderDashboardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 	        throws ServletException, IOException {
 		
-		HttpSession session = request.getSession(false);
-	        if (session == null || session.getAttribute("user") == null) {
+		 HttpSession session = request.getSession(false);
+	        User user = (session != null) ? (User) session.getAttribute("user") : null;
+	        
+	        if(user == null || user.getRole() != User.Role.RIDER) {
 	            response.sendRedirect("login.jsp");
 	            return;
 	        }
-	    User user = (User) session.getAttribute("user");
-	    	if (user.getRole() != User.Role.RIDER) { 
-	        response.sendRedirect("login.jsp?error=unauthorized");
-	        return;
-	    	}
-	    try {
-            RideDAO rideDAO = new RideDAO();
-            List<Ride> assignedRides = rideDAO.getRidesByRider(user.getId());
-            request.setAttribute("assignedRides", assignedRides);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        request.setAttribute("error", "Error loading rides");
+
+	        try {
+	            RiderDAO riderDAO = new RiderDAO();
+	            Rider rider = riderDAO.findByUserId(user.getId());
+	            
+	            RideDAO rideDAO = new RideDAO();
+	            List<Ride> assignedRides = rideDAO.getRidesByRider(rider.getRiderId());
+	            
+	            request.setAttribute("rider", rider);
+	            request.setAttribute("assignedRides", assignedRides);
+	            
+	        } catch (Exception e) {
+	            request.setAttribute("error", "Error loading data: " + e.getMessage());
+	        }
+	        
+	        request.getRequestDispatcher("/rider.jsp").forward(request, response);
 	    }
-	    request.getRequestDispatcher("/rider.jsp").forward(request, response);
 	}
-}
