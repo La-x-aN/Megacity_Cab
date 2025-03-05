@@ -2,7 +2,6 @@ package com.MegaCity_Cab.servlets;
 
 import com.MegaCity_Cab.dao.RideDAO;
 import com.MegaCity_Cab.dao.RiderDAO;
-import com.MegaCity_Cab.dao.UserDAO;
 import com.MegaCity_Cab.model.User;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -32,17 +31,19 @@ public class AdminDashboardServlet extends HttpServlet {
             // Initialize DAOs
             RideDAO rideDAO = new RideDAO();
             RiderDAO riderDAO = new RiderDAO();
-            UserDAO userDAO = new UserDAO();
+            
             
             // Get data once
             request.setAttribute("rides", rideDAO.getAllRides());
             request.setAttribute("riders", riderDAO.getAllRiders());
-            request.setAttribute("allUsers", userDAO.getAllUsers());
+
             
         } catch (Exception e) {
             request.setAttribute("error", "Error loading data: " + e.getMessage());
         }
         
         request.getRequestDispatcher("/admin.jsp").forward(request, response);
+
+        
     }
 }

@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +9,14 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <% if(request.getParameter("error") != null) { %>
+        
+        <c:if test="${not empty param.error}">
             <div class="alert error">Invalid credentials</div>
-        <% } %>
-        <% if(request.getParameter("registered") != null) { %>
+        </c:if>
+        
+        <c:if test="${not empty param.registered}">
             <div class="alert success">Registration successful! Please login.</div>
-        <% } %>
+        </c:if>
         
         <form action="login" method="post">
             <div class="form-group">

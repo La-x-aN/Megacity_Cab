@@ -7,66 +7,14 @@
 <head>
     <title>Admin-Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-    <style>
-        .nav-bar { background: #333; padding: 1rem; color: white; }
-        .nav-bar a { color: white; margin-right: 1rem; text-decoration: none; }
-        .search-box { margin: 1rem 0; }
-        .data-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-        .data-table th, .data-table td { padding: 0.75rem; border: 1px solid #ddd; }
-        .data-table tr:nth-child(even) { background-color: #f9f9f9; }
-        .error { color: red; padding: 1rem; border: 1px solid red; margin: 1rem 0; }
-    </style>
+
 </head>
 <body>
-    <div class="nav-bar">
-        <a href="#users">Manage Users</a>
-        <a href="#rides">Manage Rides</a>
-        <a href="login.jsp" style="float: right;">Logout</a>
-    </div>
+
+<jsp:include page="adminNav.jsp" />
 
     <div class="container">
-        <h1>Welcome-Admin: <c:out value="${sessionScope.user.name}"/></h1>
-
-        <c:if test="${not empty error}">
-            <div class="error"><c:out value="${error}"/></div>
-        </c:if>
-
-        <!-- User Management Section -->
-        <div id="users" class="admin-section">
-            <h2>Manage Users</h2>
-            
-            <div class="search-box">
-                <input type="text" placeholder="Search users..." id="userSearch">
-            </div>
-
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${requestScope.allUsers}" var="user">
-                        <tr>
-                            <td><c:out value="${user.id}"/></td>
-                            <td><c:out value="${user.name}"/></td>
-                            <td><c:out value="${user.email}"/></td>
-                            <td><c:out value="${user.role}"/></td>
-                            <td>
-                                <a href="EditUserServlet?id=${user.id}">Edit</a> | 
-                                <a href="DeleteUserServlet?id=${user.id}" 
-                                   onclick="return confirm('Delete this user?')">Delete</a>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div>
-
+  
         <!-- Ride Management Section -->
         <div id="rides" class="admin-section">
             <h2>Manage Rides</h2>
@@ -126,15 +74,6 @@
         </div>
     </div>
 
-    <script>
-        // Client-side search functionality
-        document.getElementById('userSearch').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('#users tbody tr').forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
-        });
-    </script>
+
 </body>
 </html>

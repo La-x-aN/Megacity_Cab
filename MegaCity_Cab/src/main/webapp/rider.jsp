@@ -8,82 +8,65 @@
 <%@ page import="com.MegaCity_Cab.model.User.Role" %>
 
 
-<%
-User user = (User) session.getAttribute("user");
-if(user == null || user.getRole() != Role.RIDER) {
-    response.sendRedirect("login.jsp");
-    return;
-}
-
-RiderDAO riderDAO = new RiderDAO();
-Rider rider = riderDAO.findByUserId(user.getId());
-
-if(rider == null) {
-    response.sendRedirect("login.jsp?error=no_rider_profile");
-    return;
-}
-
-RideDAO rideDAO = new RideDAO();
-List<Ride> assignedRides = rideDAO.getRidesByRider(rider.getRiderId());
-
-
-request.setAttribute("assignedRides", assignedRides);
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rider_Dashboard</title>
+    <title>Rider-Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
-	<h1>Welcome Rider: <%= user.getName() %></h1>
-<div>
-    <% if (rider != null) { %>
-        <table id="vehicleDetails">
-            <tr>
-                <th>Vehicle Type</th>
-                <th>Vehicle Model</th>
-                <th>Vehicle Number</th>
-            </tr>
-            <tr>
-                <td><%= rider.getVehicleType() %></td>
-                <td><%= rider.getVehicleModel() %></td>
-                <td><%= rider.getVehicleNumber() %></td>
-            </tr>
-        </table>
-    <% }%>
- </div>   
+    <c:if test="${empty sessionScope.user || sessionScope.user.role ne 'RIDER'}">
+        <c:redirect url="login.jsp"/>
+    </c:if>
 
-<div class="rider-rides">
-    <h2>Your Assigned Rides</h2>
-    <table>
-        <tr>
-            <th>Ride ID</th>
-            <th>Pickup</th>
-            <th>Destination</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        <% for(Ride ride : assignedRides) { %>
-        <tr>
-            <td><%= ride.getRideId() %></td>
-            <td><%= ride.getPickupLocation() %></td>
-            <td><%= ride.getDestination() %></td>
-            <td><%= ride.getStatus() %></td>
-            <td>
-                <% if(ride.getStatus().equals("assigned")) { %>
-                <form action="rider/completeRide" method="post">
-                    <input type="hidden" name="rideId" value="<%= ride.getRideId() %>">
-                    <button type="submit">Mark Complete</button>
-                </form>
-                <% } %>
-            </td>
-        </tr>
-        <% } %>
-    </table>
-</div>
-   
+    <h1>Welcome Rider: <c:out value="${sessionScope.user.name}"/></h1>
+    
+    <div>
+        <c:if test="${not empty rider}">
+            <table id="vehicleDetails">
+                <tr>
+                    <th>Vehicle Type</th>
+                    <th>Vehicle Model</th>
+                    <th>Vehicle Number</th>
+                </tr>
+                <tr>
+                    <td><c:out value="${rider.vehicleType}"/></td>
+                    <td><c:out value="${rider.vehicleModel}"/></td>
+                    <td><c:out value="${rider.vehicleNumber}"/></td>
+                </tr>
+            </table>
+        </c:if>
+    </div>   
+
+    <div class="rider-rides">
+        <h2>Your Assigned Rides</h2>
+        <table>
+            <tr>
+                <th>Ride ID</th>
+                <th>Pickup</th>
+                <th>Destination</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <c:forEach items="${assignedRides}" var="ride">
+                <tr>
+                    <td><c:out value="${ride.rideId}"/></td>
+                    <td><c:out value="${ride.pickupLocation}"/></td>
+                    <td><c:out value="${ride.destination}"/></td>
+                    <td><c:out value="${ride.status}"/></td>
+                    <td>
+                        <c:if test="${ride.status eq 'ASSIGNED'}">
+                            <form action="${pageContext.request.contextPath}/completeRide" method="post">
+                                <input type="hidden" name="rideId" value="${ride.rideId}">
+                                <button type="submit">Mark Complete</button>
+                            </form>
+                        </c:if>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
+    
     <a href="login.jsp">Logout</a>
 </body>
 </html>
