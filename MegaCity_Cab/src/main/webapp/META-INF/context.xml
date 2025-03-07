@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context>
+<context>
     <Resource name="jdbc/megacitydb" 
               auth="Container"
               type="javax.sql.DataSource"
@@ -10,4 +10,4 @@
               password="2002"
               driverClassName="com.mysql.cj.jdbc.Driver"
               url="jdbc:mysql://localhost:3306/megacitydb?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
-</Context>
+</context>

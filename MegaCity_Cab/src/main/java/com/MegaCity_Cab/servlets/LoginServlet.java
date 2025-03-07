@@ -32,14 +32,14 @@ public class LoginServlet extends HttpServlet {
                 // Redirect to DASHBOARD SERVLET instead of JSP
                 switch(user.getRole()) {
                     case ADMIN:
-                        response.sendRedirect("adminDashboard"); // Add AdminDashboardServlet
+                        response.sendRedirect("adminDashboard"); 
                         break;
                     case RIDER:
-                        response.sendRedirect("riderDashboard"); // Add RiderDashboardServlet
+                        response.sendRedirect("riderDashboard");
                         break;
                     case USER:
                     default:
-                        response.sendRedirect("userDashboard"); // Existing UserDashboardServlet
+                        response.sendRedirect("userDashboard"); 
                 }
             } else {
                 response.sendRedirect("login.jsp?error=invalid_credentials");

@@ -26,6 +26,8 @@
                         <th>User</th>
                         <th>Pickup</th>
                         <th>Destination</th>
+                        <th>Distance (km)</th>
+        				<th>Cost (LKR)</th>
                         <th>Status</th>
                         <th>Assign Rider</th>
                     </tr>
@@ -37,6 +39,8 @@
                             <td><c:out value="${ride.userId}"/></td>
                             <td><c:out value="${ride.pickupLocation}"/></td>
                             <td><c:out value="${ride.destination}"/></td>
+                            <td><fmt:formatNumber value="${ride.distance}" pattern="#0.0"/></td>
+            				<td>$<fmt:formatNumber value="${ride.cost}" pattern="#0.00"/></td>
                             <td><c:out value="${ride.status}"/></td>
                             <td>
                                 <c:choose>

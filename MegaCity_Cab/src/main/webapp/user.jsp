@@ -65,7 +65,7 @@
             <tr>
                 <th>Pickup</th>
                 <th>Destination</th>
-                 <th>Distance (km)</th>
+                <th>Distance (km)</th>
         		<th>Cost</th>
                 <th>Scheduled Time</th>
                 <th>Status</th>

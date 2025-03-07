@@ -5,6 +5,7 @@
 <%@ page import="com.MegaCity_Cab.model.Ride" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.MegaCity_Cab.model.User.Role" %>
 
 
@@ -12,12 +13,38 @@
 <html>
 <head>
     <title>Rider-Dashboard</title>
-    <link rel="stylesheet" href="/MegaCity_Cab/css/styles.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
     <c:if test="${empty sessionScope.user || sessionScope.user.role ne 'RIDER'}">
         <c:redirect url="login.jsp"/>
     </c:if>
+    
+     <c:if test="${not empty param.success}">
+    <div class="alert success">
+        <c:choose>
+            <c:when test="${param.success == 'ride_completed'}">
+                Ride marked as completed!
+            </c:when>
+        </c:choose>
+    </div>
+</c:if>
+
+<c:if test="${not empty param.error}">
+    <div class="alert error">
+        <c:choose>
+            <c:when test="${param.error == 'completion_failed'}">
+                Failed to complete ride. Please try again.
+            </c:when>
+            <c:when test="${param.error == 'invalid_ride_id'}">
+                Invalid ride selection
+            </c:when>
+            <c:otherwise>
+                Error processing request
+            </c:otherwise>
+        </c:choose>
+    </div>
+</c:if>
 
     <h1>Welcome Rider: <c:out value="${sessionScope.user.name}"/></h1>
     
@@ -45,6 +72,8 @@
                 <th>Ride ID</th>
                 <th>Pickup</th>
                 <th>Destination</th>
+                <th>Distance (km)</th>
+        		<th>Cost (LKR)</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -53,6 +82,8 @@
                     <td><c:out value="${ride.rideId}"/></td>
                     <td><c:out value="${ride.pickupLocation}"/></td>
                     <td><c:out value="${ride.destination}"/></td>
+                    <td><fmt:formatNumber value="${ride.distance}" pattern="#0.0"/></td>
+            		<td>$<fmt:formatNumber value="${ride.cost}" pattern="#0.00"/></td>
                     <td><c:out value="${ride.status}"/></td>
                     <td>
                         <c:if test="${ride.status eq 'ASSIGNED'}">

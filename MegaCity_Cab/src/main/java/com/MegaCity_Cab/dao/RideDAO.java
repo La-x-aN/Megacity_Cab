@@ -48,7 +48,7 @@ public class RideDAO {
 	}
 
     public boolean updateRide(Ride ride) throws Exception {
-        String sql = "UPDATE rides SET pickup_location = ?, destination = ?, scheduled_time = ? WHERE ride_id = ?";
+        String sql = "UPDATE rides SET pickup_location = ?, destination = ?, distance = ?, cost = ? scheduled_time = ? WHERE ride_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
@@ -56,6 +56,8 @@ public class RideDAO {
             stmt.setString(2, ride.getDestination());
             stmt.setTimestamp(3, Timestamp.valueOf(ride.getScheduledTime()));
             stmt.setInt(4, ride.getRideId());
+            stmt.setDouble(5, ride.getDistance());
+            stmt.setDouble(6, ride.getCost());
             
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -126,10 +128,14 @@ public class RideDAO {
     }
 
 
-	public boolean completeRide(int rideId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public boolean completeRide(int rideId) throws SQLException {
+        String sql = "UPDATE rides SET status = 'COMPLETED' WHERE ride_id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, rideId);
+            return stmt.executeUpdate() > 0;
+        }
+    }
 	
 	public Ride getRideById(int rideId) throws Exception {
 	    String sql = "SELECT * FROM rides WHERE ride_id = ?";
