@@ -35,7 +35,10 @@ public class BookRideServlet extends HttpServlet {
         String destination = request.getParameter("destination");
         String scheduledTimeStr = request.getParameter("scheduledTime");
         String distanceStr = request.getParameter("distance");
-
+        String selectedVehicleStr = request.getParameter("SelectedVehicle"); // Match form name
+       
+       
+      
         // Validate inputs
         if (scheduledTimeStr == null || scheduledTimeStr.isEmpty()) {
         	response.sendRedirect("userDashboard");
@@ -43,29 +46,39 @@ public class BookRideServlet extends HttpServlet {
         }
 
         try {
-        	LocalDateTime scheduledTime = LocalDateTime.parse(request.getParameter("scheduledTime") );
-        	double distance = Double.parseDouble(distanceStr);
-            Ride ride = new Ride();
+            LocalDateTime scheduledTime = LocalDateTime.parse(scheduledTimeStr);
+            double distance = Double.parseDouble(distanceStr);
+            Ride.SelectedVehicle selectedVehicle = Ride.SelectedVehicle.fromString(selectedVehicleStr);
             
-            ride.setDistance(distance);
-            ride.calculateCost();
+            Ride ride = new Ride();
             ride.setUserId(user.getId());
             ride.setPickupLocation(pickup);
             ride.setDestination(destination);
             ride.setScheduledTime(scheduledTime);
+            ride.setSelectedVehicle(selectedVehicle);
+            ride.setDistance(distance);
+            
+            // Set deadline 1 hour before scheduled time
+            ride.setDeadlineTime(scheduledTime.minusHours(1));
+            ride.setStatus(Ride.Status.REQUESTED);
+            ride.setCost(ride.calculateCost());
 
             if (new RideDAO().createRide(ride)) {
-            	response.sendRedirect("userDashboard");
+                response.sendRedirect("userDashboard");
             } else {
-            	response.sendRedirect("userDashboard?error=creation_failed");
+                response.sendRedirect("userDashboard?error=creation_failed");
             }
+         
         } catch (NumberFormatException e) {
             response.sendRedirect("userDashboard?error=invalid_distance");
         } catch (DateTimeParseException e) {
         	response.sendRedirect("userDashboard?error=invalid_time_format");
+        } catch (IllegalArgumentException e) {
+            response.sendRedirect("userDashboard?error=invalid_vehicle");
+            return;
         } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-    }
+        }
+	}
 }

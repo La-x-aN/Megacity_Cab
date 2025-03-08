@@ -72,6 +72,7 @@
                 <th>Ride ID</th>
                 <th>Pickup</th>
                 <th>Destination</th>
+                <th>Vehicle Type</th>
                 <th>Distance (km)</th>
         		<th>Cost (LKR)</th>
                 <th>Status</th>
@@ -82,8 +83,9 @@
                     <td><c:out value="${ride.rideId}"/></td>
                     <td><c:out value="${ride.pickupLocation}"/></td>
                     <td><c:out value="${ride.destination}"/></td>
+                    <td><c:out value="${ride.selectedVehicle}"/></td>
                     <td><fmt:formatNumber value="${ride.distance}" pattern="#0.0"/></td>
-            		<td>$<fmt:formatNumber value="${ride.cost}" pattern="#0.00"/></td>
+            		<td>LKR <fmt:formatNumber value="${ride.cost}" pattern="#,##0.00"/></td>
                     <td><c:out value="${ride.status}"/></td>
                     <td>
                         <c:if test="${ride.status eq 'ASSIGNED'}">

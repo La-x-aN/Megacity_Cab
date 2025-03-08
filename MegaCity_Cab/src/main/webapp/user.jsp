@@ -37,6 +37,17 @@
                        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
             </div>
             <div class="form-group">
+    			<label>Vehicle Type:</label>
+    				<select name="SelectedVehicle" required>
+					    <option value="">Select Vehicle</option>
+					    <option value="MOTOR_BIKE">Motor Bike (LKR 30/km)</option>
+					    <option value="THREE_WHEEL">Three Wheel (LKR 35/km)</option>
+					    <option value="CAR">Car (LKR 45/km)</option>
+					    <option value="VAN">Van (LKR 60/km)</option>
+					    <option value="TRUCK">Truck (LKR 80/km)</option>
+					</select>
+			</div>
+            <div class="form-group">
     			<label>Distance (km):</label>
     			<input type="number" name="distance" step="0.1" required>
 			</div>
@@ -65,6 +76,7 @@
             <tr>
                 <th>Pickup</th>
                 <th>Destination</th>
+                <th>Selected Vehicle</th>
                 <th>Distance (km)</th>
         		<th>Cost</th>
                 <th>Scheduled Time</th>
@@ -75,21 +87,22 @@
                 <tr>
                     <td><c:out value="${ride.pickupLocation}"/></td>
                     <td><c:out value="${ride.destination}"/></td>
+                    <td><c:out value="${ride.selectedVehicle}"/></td>
                     <td><fmt:formatNumber value="${ride.distance}" pattern="#0.0"/></td>
-            		<td>$<fmt:formatNumber value="${ride.cost}" pattern="#0.00"/></td>
+            		<td>LKR <fmt:formatNumber value="${ride.cost}" pattern="#,##0.00"/></td>
                     <td>
                         <fmt:formatDate value="${ride.scheduledTimeAsDate}" 
                                       pattern="yyyy-MM-dd HH:mm" />
                     </td>
                     <td><c:out value="${ride.status}"/></td>
                     <td>
-                        <c:if test="${ride.editable}">
-                            <button class="delete-btn" 
-                                    data-ride-id="${ride.rideId}">
-                                Cancel your ride
-                            </button>
-                        </c:if>
-                    </td>
+    					<c:if test="${ride.editable}">
+        					<form action="deleteRide" method="post">
+            					<input type="hidden" name="rideId" value="${ride.rideId}">
+            					<button type="submit">Cancel Ride</button>
+        					</form>
+    					</c:if>
+					</td>
                 </tr>
             </c:forEach>
         </table>

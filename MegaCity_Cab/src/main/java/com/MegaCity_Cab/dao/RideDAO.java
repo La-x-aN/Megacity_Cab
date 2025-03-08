@@ -9,24 +9,28 @@ import java.util.List;
 public class RideDAO {
    
 
-	public boolean createRide(Ride ride) throws Exception {
-        String sql = "INSERT INTO rides (user_id, pickup_location, destination, scheduled_time, distance, cost) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setInt(1, ride.getUserId());
-            stmt.setString(2, ride.getPickupLocation());
-            stmt.setString(3, ride.getDestination());
-            stmt.setTimestamp(4, Timestamp.valueOf(ride.getScheduledTime()));
-            stmt.setDouble(5, ride.getDistance());
-            stmt.setDouble(6, ride.getCost());
-            
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+	 public boolean createRide(Ride ride) throws Exception {
+	        String sql = "INSERT INTO rides (user_id, pickup_location, destination, scheduled_time, deadline_time, distance, cost, selected_vehicle, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	        try (Connection conn = DBUtil.getConnection();
+	             PreparedStatement stmt = conn.prepareStatement(sql)) {
+	            
+	            stmt.setInt(1, ride.getUserId());
+	            stmt.setString(2, ride.getPickupLocation());
+	            stmt.setString(3, ride.getDestination());
+	            stmt.setTimestamp(4, Timestamp.valueOf(ride.getScheduledTime()));
+	            stmt.setTimestamp(5, ride.getDeadlineTime() != null ? Timestamp.valueOf(ride.getDeadlineTime()) : null);
+	            stmt.setDouble(6, ride.getDistance());
+	            stmt.setDouble(7, ride.getCost());
+	            stmt.setString(8, ride.getSelectedVehicle().name());
+	            stmt.setString(9, ride.getStatus().name());
+
+	            return stmt.executeUpdate() > 0;
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+
 
 	public List<Ride> getUserRides(int userId) throws Exception {
 	    List<Ride> rides = new ArrayList<>();
@@ -47,24 +51,25 @@ public class RideDAO {
 	    return rides;
 	}
 
-    public boolean updateRide(Ride ride) throws Exception {
-        String sql = "UPDATE rides SET pickup_location = ?, destination = ?, distance = ?, cost = ? scheduled_time = ? WHERE ride_id = ?";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setString(1, ride.getPickupLocation());
-            stmt.setString(2, ride.getDestination());
-            stmt.setTimestamp(3, Timestamp.valueOf(ride.getScheduledTime()));
-            stmt.setInt(4, ride.getRideId());
-            stmt.setDouble(5, ride.getDistance());
-            stmt.setDouble(6, ride.getCost());
-            
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+	 public boolean updateRide(Ride ride) throws Exception {
+	        String sql = "UPDATE rides SET pickup_location = ?, destination = ?, distance = ?, selected_vehicle = ?, cost = ?, scheduled_time = ? WHERE ride_id = ?";
+	        try (Connection conn = DBUtil.getConnection();
+	             PreparedStatement stmt = conn.prepareStatement(sql)) {
+	            
+	            stmt.setString(1, ride.getPickupLocation());
+	            stmt.setString(2, ride.getDestination());
+	            stmt.setDouble(3, ride.getDistance());
+	            stmt.setString(4, ride.getSelectedVehicle().name());
+	            stmt.setDouble(5, ride.getCost());
+	            stmt.setTimestamp(6, Timestamp.valueOf(ride.getScheduledTime()));
+	            stmt.setInt(7, ride.getRideId());
+
+	            return stmt.executeUpdate() > 0;
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
 
     public boolean deleteRide(int rideId) throws Exception {
         String sql = "DELETE FROM rides WHERE ride_id = ?";
@@ -81,7 +86,6 @@ public class RideDAO {
 
     private Ride mapRideFromResultSet(ResultSet rs) throws SQLException {
         Ride ride = new Ride();
-
         ride.setRideId(rs.getInt("ride_id"));
         ride.setUserId(rs.getInt("user_id"));
         ride.setPickupLocation(rs.getString("pickup_location"));
@@ -89,24 +93,30 @@ public class RideDAO {
         ride.setDistance(rs.getDouble("distance"));
         ride.setCost(rs.getDouble("cost"));
         
-
-        // Convert String to Status enum
-        String statusStr = rs.getString("status");
+        // Fixed vehicle mapping
         try {
-            ride.setStatus(Ride.Status.valueOf(statusStr.trim().toUpperCase()));
-        	} catch (IllegalArgumentException e) {
-            ride.setStatus(Ride.Status.PENDING); // Fallback to default
-            System.err.println("Invalid status value in DB: " + statusStr);
-        	}
+            ride.setSelectedVehicle(
+                Ride.SelectedVehicle.fromString(rs.getString("selected_vehicle"))
+            );
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid vehicle type in DB: " + rs.getString("selected_vehicle"));
+            ride.setSelectedVehicle(Ride.SelectedVehicle.CAR);
+        }
 
-       
-     
+        // Status handling
+        try {
+            ride.setStatus(Ride.Status.valueOf(rs.getString("status").trim().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid status in DB: " + rs.getString("status"));
+            ride.setStatus(Ride.Status.PENDING);
+        }
+
+        // Date/time handling
         ride.setScheduledTime(rs.getTimestamp("scheduled_time").toLocalDateTime());
-
         
         Timestamp deadlineTimestamp = rs.getTimestamp("deadline_time");
-        if (!rs.wasNull()) { 
-         ride.setDeadlineTime(deadlineTimestamp.toLocalDateTime());
+        if (deadlineTimestamp != null) {
+            ride.setDeadlineTime(deadlineTimestamp.toLocalDateTime());
         }
 
         ride.setBookedTime(
@@ -115,15 +125,7 @@ public class RideDAO {
             null
         );
 
-        ride.setDeadlineTime(
-            rs.getTimestamp("deadline_time") != null ?
-            rs.getTimestamp("deadline_time").toLocalDateTime() :
-            null
-        );
-
         ride.setAssignedRiderId(rs.getInt("assigned_rider_id"));
-        ride.setScheduledTime(rs.getTimestamp("scheduled_time").toLocalDateTime());
-
         return ride;
     }
 
@@ -153,15 +155,37 @@ public class RideDAO {
 	}
 	
 	public boolean assignRider(int rideId, int riderId) throws Exception {
-	    String sql = "UPDATE rides SET assigned_rider_id = ?, status = 'assigned' WHERE ride_id = ?";
+	    String sql = "UPDATE rides SET assigned_rider_id = ?, status = 'ASSIGNED' " +
+	                 "WHERE ride_id = ? AND status = 'PENDING'";
+	    
 	    try (Connection conn = DBUtil.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        
 	        stmt.setInt(1, riderId);
 	        stmt.setInt(2, rideId);
-	        return stmt.executeUpdate() > 0;
+	        
+	        int affectedRows = stmt.executeUpdate();
+	        
+	        if (affectedRows == 0) {
+	            System.out.println("Failed to assign rider. Ride ID: " + rideId + 
+	                             " | Current Status: " + getRideStatus(rideId) + 
+	                             " | Rider ID: " + riderId);
+	        }
+	        return affectedRows > 0;
+	        
 	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        return false;
+	        System.err.println("SQL Error: " + e.getMessage());
+	        throw new Exception("Database error: " + e.getMessage());
+	    }
+	}
+
+	private String getRideStatus(int rideId) throws SQLException {
+	    String sql = "SELECT status FROM rides WHERE ride_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, rideId);
+	        ResultSet rs = stmt.executeQuery();
+	        return rs.next() ? rs.getString("status") : "NOT FOUND";
 	    }
 	}
 	

@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('editPickup').value = data.pickupLocation;
                     document.getElementById('editDestination').value = data.destination;
                     document.getElementById('editScheduledTime').value = data.scheduledTime;
-                    document.getElementById('editModal').style.display = 'block';
+                    
                 });
         });
     });

@@ -10,7 +10,28 @@
 
 </head>
 <body>
+<c:if test="${not empty param.success}">
+    <div class="alert success">
+        <c:choose>
+            <c:when test="${param.success == 'ride_assigned'}">
+                Rider successfully assigned!
+            </c:when>
+        </c:choose>
+    </div>
+</c:if>
 
+<c:if test="${not empty param.error}">
+    <div class="alert error">
+        <c:choose>
+            <c:when test="${param.error == 'assignment_failed'}">
+                Failed to assign rider. Please try again.
+            </c:when>
+            <c:when test="${param.error == 'server_error'}">
+                Server error occurred. Please contact admin.
+            </c:when>
+        </c:choose>
+    </div>
+</c:if>
 <jsp:include page="adminNav.jsp" />
 
     <div class="container">
@@ -26,6 +47,7 @@
                         <th>User</th>
                         <th>Pickup</th>
                         <th>Destination</th>
+                        <th>Vehicle Type</th>
                         <th>Distance (km)</th>
         				<th>Cost (LKR)</th>
                         <th>Status</th>
@@ -39,38 +61,39 @@
                             <td><c:out value="${ride.userId}"/></td>
                             <td><c:out value="${ride.pickupLocation}"/></td>
                             <td><c:out value="${ride.destination}"/></td>
-                            <td><fmt:formatNumber value="${ride.distance}" pattern="#0.0"/></td>
-            				<td>$<fmt:formatNumber value="${ride.cost}" pattern="#0.00"/></td>
+                    		<td><c:out value="${ride.selectedVehicle}"/></td>
+		                    <td><fmt:formatNumber value="${ride.distance}" pattern="#0.0"/></td>
+		            		<td>LKR <fmt:formatNumber value="${ride.cost}" pattern="#,##0.00"/></td>
                             <td><c:out value="${ride.status}"/></td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${ride.status == 'REQUESTED'}">
-                                        <form action="AdminAssignRideServlet" method="post">
-                                            <input type="hidden" name="rideId" value="${ride.rideId}">
-                                            <select name="riderId" required>
-                                                <c:forEach items="${requestScope.riders}" var="rider">
-                                                    <option value="${rider.riderId}">
-                                                        <c:out value="${rider.vehicleNumber}"/> 
-                                                        (<c:out value="${rider.vehicleType}"/>)
-                                                    </option>
-                                                </c:forEach>
-                                            </select>
-                                            <button type="submit">Assign</button>
-                                        </form>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:set var="assignedRider" value="${ride.assignedRiderId}"/>
-                                        <c:choose>
-                                            <c:when test="${assignedRider != 0}">
-                                                Assigned to Rider #<c:out value="${assignedRider}"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                N/A
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
+							<td>
+							    <c:choose>
+							        <c:when test="${ride.status == 'REQUESTED'}">
+							            <form action="AdminAssignRideServlet" method="post">
+							                <input type="hidden" name="rideId" value="${ride.rideId}">
+							                <select name="riderId" required>
+							                    <option value="">Select Rider</option>
+							                    <c:forEach items="${riders}" var="rider">
+							                        <option value="${rider.riderId}">
+							                            ${rider.vehicleNumber} (${rider.vehicleType})
+							                        </option>
+							                    </c:forEach>
+							                </select>
+							                <button type="submit">Assign</button>
+							            </form>
+							        </c:when>
+							        <c:otherwise>
+							            <!-- Handle NULL values from database -->
+							            <c:choose>
+							                <c:when test="${ride.assignedRiderId ne 0}">
+							                    Assigned to Rider #${ride.assignedRiderId}
+							                </c:when>
+							                <c:otherwise>
+							                    N/A
+							                </c:otherwise>
+							            </c:choose>
+							        </c:otherwise>
+							  </c:choose>
+						</td>
                         </tr>
                     </c:forEach>
                 </tbody>

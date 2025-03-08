@@ -5,14 +5,38 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class Ride {
-	
-	public enum Status { REQUESTED, PENDING, ASSIGNED, COMPLETED }
+    
+    public enum Status { REQUESTED, PENDING, ASSIGNED, COMPLETED }
+    
+    public enum SelectedVehicle { 
+        MOTOR_BIKE(30), THREE_WHEEL(35), CAR(45), VAN(60), TRUCK(80);
+        
+        private final double ratePerKm;
+        
+        SelectedVehicle(double rate) {
+            this.ratePerKm = rate;
+        }
+        
+        public double getRate() {
+            return ratePerKm;
+        }
+        
+        public static SelectedVehicle fromString(String value) {
+            for (SelectedVehicle vehicle : values()) {
+                if (vehicle.name().equalsIgnoreCase(value)) {
+                    return vehicle;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant " + SelectedVehicle.class.getName() + "." + value);
+        }
+    }
 
+    
     private int rideId;
     private int userId;
     private String pickupLocation;
     private String destination;
-    private int assignedRiderId;
+    private Integer assignedRiderId;
     private String requestTime;
     private LocalDateTime bookedTime; 
     private Status status;
@@ -20,9 +44,9 @@ public class Ride {
     private LocalDateTime deadlineTime;
     private double distance;  
     private double cost;
+    private SelectedVehicle selectedVehicle;
     
-
- 
+   
     public int getRideId() { return rideId; }
     public void setRideId(int rideId) { this.rideId = rideId; }
     
@@ -38,13 +62,16 @@ public class Ride {
     public Status getStatus() { return status; }
     public void setStatus(Status status) { this.status = status; }
     
-    public int getAssignedRiderId() { return assignedRiderId; }
-    public void setAssignedRiderId(int assignedRiderId) { this.assignedRiderId = assignedRiderId; }
+    public Integer getAssignedRiderId() { 
+        return assignedRiderId; 
+    }
+    public void setAssignedRiderId(Integer assignedRiderId) { 
+        this.assignedRiderId = assignedRiderId; 
+    }
     
     public String getRequestTime() { return requestTime; }
     public void setRequestTime(String requestTime) { this.requestTime = requestTime; }
 
-	
     public LocalDateTime getScheduledTime() { return scheduledTime; }
     public void setScheduledTime(LocalDateTime scheduledTime) { 
         this.scheduledTime = scheduledTime; 
@@ -75,16 +102,16 @@ public class Ride {
     }
     
     public double calculateCost() {
-        double baseFare = 45.00;
-        double ratePerKm = 16.00;
-        return baseFare + (distance * ratePerKm);
+        double baseFare = 100.00;
+        return baseFare + (distance * selectedVehicle.getRate());
     }
-	public double getCost() {
-		return cost;
-	}
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
-
-	
+    public double getCost() {
+        return cost;
+    }
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+    
+    public SelectedVehicle getSelectedVehicle() { return selectedVehicle; }
+    public void setSelectedVehicle(SelectedVehicle selectedVehicle) { this.selectedVehicle = selectedVehicle; }
 }

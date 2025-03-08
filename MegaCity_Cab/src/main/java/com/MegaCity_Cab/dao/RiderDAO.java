@@ -67,6 +67,26 @@ public class RiderDAO {
         }
         return riders;
     }
+    public List<Rider> getAllAvailableRiders() throws SQLException {
+        List<Rider> riders = new ArrayList<>();
+        // Match exact database column name (e.g., "is_available")
+        String sql = "SELECT * FROM riders WHERE is_available = true"; 
+        
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Rider rider = new Rider();
+                rider.setRiderId(rs.getInt("rider_id"));
+                rider.setVehicleType(rs.getString("vehicle_type"));
+                rider.setVehicleNumber(rs.getString("vehicle_number"));
+                riders.add(rider);
+            }
+        }
+        return riders;
+    }
+    
     
 
 }
