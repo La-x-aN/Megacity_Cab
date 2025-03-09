@@ -90,11 +90,8 @@ public class Ride {
     public double getDistance() { return distance; }
     public void setDistance(double distance) { this.distance = distance; }
 
-    public boolean isEditable() {
-        return status == Status.REQUESTED 
-            && deadlineTime != null 
-            && LocalDateTime.now().isBefore(deadlineTime);
-    }
+  
+    
     public Date getScheduledTimeAsDate() {
         return Date.from(
             scheduledTime.atZone(ZoneId.systemDefault()).toInstant()
@@ -114,4 +111,9 @@ public class Ride {
     
     public SelectedVehicle getSelectedVehicle() { return selectedVehicle; }
     public void setSelectedVehicle(SelectedVehicle selectedVehicle) { this.selectedVehicle = selectedVehicle; }
+    
+    public boolean isEditable() {
+        return status == Status.REQUESTED; // Direct status check
+    }
+	
 }

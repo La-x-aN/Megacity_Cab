@@ -34,7 +34,7 @@ public class RideDAO {
 
 	public List<Ride> getUserRides(int userId) throws Exception {
 	    List<Ride> rides = new ArrayList<>();
-	    String sql = "SELECT * FROM rides WHERE user_id = ? ORDER BY scheduled_time";
+	    String sql = "SELECT * FROM rides WHERE user_id = ? AND status != 'COMPLETED' ORDER BY scheduled_time";
 	    
 	    try (Connection conn = DBUtil.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -50,6 +50,7 @@ public class RideDAO {
 	    }
 	    return rides;
 	}
+	
 
 	 public boolean updateRide(Ride ride) throws Exception {
 	        String sql = "UPDATE rides SET pickup_location = ?, destination = ?, distance = ?, selected_vehicle = ?, cost = ?, scheduled_time = ? WHERE ride_id = ?";
@@ -84,7 +85,7 @@ public class RideDAO {
         }
     }
 
-    private Ride mapRideFromResultSet(ResultSet rs) throws SQLException {
+    private Ride mapRideFromResultSet(ResultSet rs) throws SQLException, IllegalArgumentException {
         Ride ride = new Ride();
         ride.setRideId(rs.getInt("ride_id"));
         ride.setUserId(rs.getInt("user_id"));
@@ -93,13 +94,16 @@ public class RideDAO {
         ride.setDistance(rs.getDouble("distance"));
         ride.setCost(rs.getDouble("cost"));
         
-        // Fixed vehicle mapping
+        String vehicleStr = rs.getString("selected_vehicle");
         try {
-            ride.setSelectedVehicle(
-                Ride.SelectedVehicle.fromString(rs.getString("selected_vehicle"))
-            );
+            if (vehicleStr == null || vehicleStr.trim().isEmpty()) {
+                System.err.println("Warning: Empty vehicle type for ride " + ride.getRideId());
+                ride.setSelectedVehicle(Ride.SelectedVehicle.CAR); // Default to CAR
+            } else {
+                ride.setSelectedVehicle(Ride.SelectedVehicle.fromString(vehicleStr));
+            }
         } catch (IllegalArgumentException e) {
-            System.err.println("Invalid vehicle type in DB: " + rs.getString("selected_vehicle"));
+            System.err.println("Invalid vehicle type: " + vehicleStr);
             ride.setSelectedVehicle(Ride.SelectedVehicle.CAR);
         }
 
@@ -125,7 +129,8 @@ public class RideDAO {
             null
         );
 
-        ride.setAssignedRiderId(rs.getInt("assigned_rider_id"));
+        Integer assignedRiderId = rs.getObject("assigned_rider_id", Integer.class);
+        ride.setAssignedRiderId(assignedRiderId);
         return ride;
     }
 
@@ -156,7 +161,7 @@ public class RideDAO {
 	
 	public boolean assignRider(int rideId, int riderId) throws Exception {
 	    String sql = "UPDATE rides SET assigned_rider_id = ?, status = 'ASSIGNED' " +
-	                 "WHERE ride_id = ? AND status = 'PENDING'";
+	                 "WHERE ride_id = ? AND status = 'REQUESTED'"; // Updated condition
 	    
 	    try (Connection conn = DBUtil.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -166,11 +171,6 @@ public class RideDAO {
 	        
 	        int affectedRows = stmt.executeUpdate();
 	        
-	        if (affectedRows == 0) {
-	            System.out.println("Failed to assign rider. Ride ID: " + rideId + 
-	                             " | Current Status: " + getRideStatus(rideId) + 
-	                             " | Rider ID: " + riderId);
-	        }
 	        return affectedRows > 0;
 	        
 	    } catch (SQLException e) {
@@ -179,15 +179,6 @@ public class RideDAO {
 	    }
 	}
 
-	private String getRideStatus(int rideId) throws SQLException {
-	    String sql = "SELECT status FROM rides WHERE ride_id = ?";
-	    try (Connection conn = DBUtil.getConnection();
-	         PreparedStatement stmt = conn.prepareStatement(sql)) {
-	        stmt.setInt(1, rideId);
-	        ResultSet rs = stmt.executeQuery();
-	        return rs.next() ? rs.getString("status") : "NOT FOUND";
-	    }
-	}
 	
 	public List<Ride> getAllRides() throws Exception {
 	    List<Ride> rides = new ArrayList<>();
@@ -223,5 +214,6 @@ public class RideDAO {
 	    }
 	    return rides;
 	}
+	
 	
 }

@@ -34,7 +34,7 @@ public class CompleteRideServlet extends HttpServlet {
 
 		    try {
 		        int rideId = Integer.parseInt(request.getParameter("rideId"));
-		        RideDAO rideDAO = new RideDAO();
+		        RideDAO rideDAO = new RideDAO();		       
 		        
 		        if (rideDAO.completeRide(rideId)) {
 		            response.sendRedirect("riderDashboard?success=ride_completed");

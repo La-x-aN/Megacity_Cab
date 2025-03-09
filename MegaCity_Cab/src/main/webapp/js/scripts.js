@@ -71,3 +71,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('riderModal');
+    const span = document.getElementsByClassName('close')[0];
+    
+    document.querySelectorAll('.show-rider-btn').forEach(btn => {
+        btn.onclick = function() {
+            document.getElementById('modalVehicleNumber').textContent = 
+                this.dataset.vehicleNumber;
+            document.getElementById('modalVehicleType').textContent = 
+                this.dataset.vehicleType;
+            document.getElementById('modalPhone').textContent = 
+                this.dataset.phone;
+            modal.style.display = 'block';
+        }
+    });
+
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+});

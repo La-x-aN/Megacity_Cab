@@ -8,7 +8,8 @@ import java.util.List;
 
 public class RiderDAO {
     public boolean createRider(Rider rider) throws Exception {
-        String sql = "INSERT INTO riders (user_id, vehicle_type, vehicle_model, vehicle_number) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO riders (user_id, vehicle_type, vehicle_model, vehicle_number, phone) " +
+                     "VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
@@ -16,6 +17,7 @@ public class RiderDAO {
             stmt.setString(2, rider.getVehicleType());
             stmt.setString(3, rider.getVehicleModel());
             stmt.setString(4, rider.getVehicleNumber());
+            stmt.setString(5, rider.getPhone());
             
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -23,6 +25,7 @@ public class RiderDAO {
             return false;
         }
     }
+
     public Rider findByUserId(int userId) throws Exception {
         String sql = "SELECT * FROM riders WHERE user_id = ?";
         try (Connection conn = DBUtil.getConnection();
@@ -32,13 +35,7 @@ public class RiderDAO {
             ResultSet rs = stmt.executeQuery();
             
             if(rs.next()) {
-                Rider rider = new Rider();
-                rider.setRiderId(rs.getInt("rider_id"));
-                rider.setUserId(rs.getInt("user_id"));
-                rider.setVehicleType(rs.getString("vehicle_type"));
-                rider.setVehicleModel(rs.getString("vehicle_model"));
-                rider.setVehicleNumber(rs.getString("vehicle_number"));
-                return rider;
+                return mapRider(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,43 +47,58 @@ public class RiderDAO {
         List<Rider> riders = new ArrayList<>();
         String sql = "SELECT * FROM riders";
         try (Connection conn = DBUtil.getConnection();
-             Statement stmt = conn.createStatement()) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                Rider rider = new Rider();
-                rider.setRiderId(rs.getInt("rider_id"));
-                rider.setUserId(rs.getInt("user_id"));
-                rider.setVehicleType(rs.getString("vehicle_type"));
-                rider.setVehicleModel(rs.getString("vehicle_model"));
-                rider.setVehicleNumber(rs.getString("vehicle_number"));
-                riders.add(rider);
+                riders.add(mapRider(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return riders;
     }
+
     public List<Rider> getAllAvailableRiders() throws SQLException {
         List<Rider> riders = new ArrayList<>();
-        // Match exact database column name (e.g., "is_available")
-        String sql = "SELECT * FROM riders WHERE is_available = true"; 
+        String sql = "SELECT * FROM riders WHERE is_available = true";
         
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Rider rider = new Rider();
-                rider.setRiderId(rs.getInt("rider_id"));
-                rider.setVehicleType(rs.getString("vehicle_type"));
-                rider.setVehicleNumber(rs.getString("vehicle_number"));
-                riders.add(rider);
+                riders.add(mapRider(rs));
             }
         }
         return riders;
     }
-    
-    
 
+    public Rider getRiderById(int riderId) throws SQLException {
+        String sql = "SELECT * FROM riders WHERE rider_id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, riderId);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return mapRider(rs);
+            }
+        }
+        return null;
+    }
+
+    private Rider mapRider(ResultSet rs) throws SQLException {
+        Rider rider = new Rider();
+        rider.setRiderId(rs.getInt("rider_id"));
+        rider.setUserId(rs.getInt("user_id"));
+        rider.setVehicleType(rs.getString("vehicle_type"));
+        rider.setVehicleModel(rs.getString("vehicle_model"));
+        rider.setVehicleNumber(rs.getString("vehicle_number"));
+        rider.setPhone(rs.getString("phone"));  // Now from riders table
+        return rider;
+    }
+    
+    
 }

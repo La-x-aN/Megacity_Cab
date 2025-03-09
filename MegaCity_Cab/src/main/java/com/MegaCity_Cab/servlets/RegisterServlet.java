@@ -51,6 +51,7 @@ public class RegisterServlet extends HttpServlet {
                     rider.setVehicleType(vehicleType);
                     rider.setVehicleModel(vehicleModel);
                     rider.setVehicleNumber(vehicleNumber);
+                    rider.setPhone(phone);
                     new RiderDAO().createRider(rider);
                 }
                 response.sendRedirect("login.jsp?registered=true");

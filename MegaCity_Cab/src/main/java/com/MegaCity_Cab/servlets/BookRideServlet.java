@@ -35,10 +35,11 @@ public class BookRideServlet extends HttpServlet {
         String destination = request.getParameter("destination");
         String scheduledTimeStr = request.getParameter("scheduledTime");
         String distanceStr = request.getParameter("distance");
-        String selectedVehicleStr = request.getParameter("SelectedVehicle"); // Match form name
-       
-       
-      
+        String selectedVehicleStr = request.getParameter("SelectedVehicle");
+        if (selectedVehicleStr == null || selectedVehicleStr.isEmpty()) {
+            response.sendRedirect("userDashboard?error=invalid_vehicle");
+            return;
+        }
         // Validate inputs
         if (scheduledTimeStr == null || scheduledTimeStr.isEmpty()) {
         	response.sendRedirect("userDashboard");

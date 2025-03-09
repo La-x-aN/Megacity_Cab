@@ -6,6 +6,7 @@ public class Rider {
     private String vehicleType;
     private String vehicleModel;
     private String vehicleNumber;
+    private String phone;
 
    
     public int getRiderId() { return riderId; }
@@ -18,4 +19,6 @@ public class Rider {
     public void setVehicleModel(String vehicleModel) { this.vehicleModel = vehicleModel; }
     public String getVehicleNumber() { return vehicleNumber; }
     public void setVehicleNumber(String vehicleNumber) { this.vehicleNumber = vehicleNumber; }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
 }
