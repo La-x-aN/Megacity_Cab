@@ -40,9 +40,9 @@ public class EditUserServlet extends HttpServlet {
                 return;
             }
             
-            // Verify role conversion
+
             if (user.getRole() == null) {
-                user.setRole(User.Role.USER); // Set default role
+                user.setRole(User.Role.USER);
             }
             
             request.setAttribute("user", user);

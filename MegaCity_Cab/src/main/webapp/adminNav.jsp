@@ -102,6 +102,7 @@
         <div class="nav-links">
             <a class="nav-link" href="adminDashboard">Manage Rides</a>
             <a class="nav-link" href="adminUsers">Manage Users</a>
+            <a class="nav-link" href="adminRiders">View Riders</a>
         </div>
 
         <div class="profile-section">
