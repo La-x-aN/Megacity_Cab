@@ -22,79 +22,26 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleVehicleFields();
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Edit Ride Modal
-    document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const rideId = this.dataset.rideId;
-            fetch(`getRideDetails?rideId=${rideId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('editRideId').value = data.rideId;
-                    document.getElementById('editPickup').value = data.pickupLocation;
-                    document.getElementById('editDestination').value = data.destination;
-                    document.getElementById('editScheduledTime').value = data.scheduledTime;
-                    
-                });
-        });
-    });
 
-    // Delete Ride
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            if(confirm('Are you sure you want to delete this ride?')) {
-                fetch(`deleteRide?rideId=${this.dataset.rideId}`, {
-                    method: 'POST'
-                }).then(() => window.location.reload());
-            }
-        });
-    });
 
-    // Modal Close
-    document.querySelector('.close').addEventListener('click', () => {
-        document.getElementById('editModal').style.display = 'none';
-    });
+document.addEventListener('DOMContentLoaded', () => {
+           const modal = document.getElementById('riderModal');
+           const span = document.querySelector('.close');
+           
+           document.querySelectorAll('.show-rider-btn').forEach(btn => {
+               btn.addEventListener('click', () => {
+                   document.getElementById('modalVehicleNumber').textContent = 
+                       btn.dataset.vehicleNumber;
+                   document.getElementById('modalVehicleType').textContent = 
+                       btn.dataset.vehicleType;
+                   document.getElementById('modalPhone').textContent = 
+                       btn.dataset.phone;
+                   modal.style.display = 'block';
+               });
+           });
 
-    window.onclick = function(event) {
-        const modal = document.getElementById('editModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    }
-
-    // Form Validation
-    document.getElementById('editForm').addEventListener('submit', function(e) {
-        const scheduledTime = new Date(document.getElementById('editScheduledTime').value);
-        if (scheduledTime < new Date()) {
-            e.preventDefault();
-            alert('Cannot schedule rides in the past');
-        }
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('riderModal');
-    const span = document.getElementsByClassName('close')[0];
-    
-    document.querySelectorAll('.show-rider-btn').forEach(btn => {
-        btn.onclick = function() {
-            document.getElementById('modalVehicleNumber').textContent = 
-                this.dataset.vehicleNumber;
-            document.getElementById('modalVehicleType').textContent = 
-                this.dataset.vehicleType;
-            document.getElementById('modalPhone').textContent = 
-                this.dataset.phone;
-            modal.style.display = 'block';
-        }
-    });
-
-    span.onclick = function() {
-        modal.style.display = 'none';
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
-    }
-});
+           span.onclick = () => modal.style.display = 'none';
+           window.onclick = (event) => {
+               if (event.target === modal) modal.style.display = 'none';
+           }
+       });

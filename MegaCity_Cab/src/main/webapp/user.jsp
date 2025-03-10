@@ -12,6 +12,7 @@
 <head>
     <title>User-Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 </head>
 <body>
     <h1>Welcome User: <c:out value="${sessionScope.user.name}"/></h1>
@@ -135,29 +136,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('riderModal');
-            const span = document.querySelector('.close');
-            
-            document.querySelectorAll('.show-rider-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.getElementById('modalVehicleNumber').textContent = 
-                        btn.dataset.vehicleNumber;
-                    document.getElementById('modalVehicleType').textContent = 
-                        btn.dataset.vehicleType;
-                    document.getElementById('modalPhone').textContent = 
-                        btn.dataset.phone;
-                    modal.style.display = 'block';
-                });
-            });
-
-            span.onclick = () => modal.style.display = 'none';
-            window.onclick = (event) => {
-                if (event.target === modal) modal.style.display = 'none';
-            }
-        });
-    </script>
 </body>
 </html>

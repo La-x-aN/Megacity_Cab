@@ -47,6 +47,7 @@
 </c:if>
 
     <h1>Welcome Rider: <c:out value="${sessionScope.user.name}"/></h1>
+     <a href="${pageContext.request.contextPath}/logout">Logout</a>
     
     <div>
         <c:if test="${not empty rider}">
@@ -55,11 +56,13 @@
                     <th>Vehicle Type</th>
                     <th>Vehicle Model</th>
                     <th>Vehicle Number</th>
+                    <th>Phone Number</th>
                 </tr>
                 <tr>
                     <td><c:out value="${rider.vehicleType}"/></td>
                     <td><c:out value="${rider.vehicleModel}"/></td>
                     <td><c:out value="${rider.vehicleNumber}"/></td>
+                    <td><c:out value="${rider.phone}"/></td>
                 </tr>
             </table>
         </c:if>
@@ -100,6 +103,6 @@
         </table>
     </div>
     
-    <a href="${pageContext.request.contextPath}/logout">Logout</a>
+   
 </body>
 </html>
