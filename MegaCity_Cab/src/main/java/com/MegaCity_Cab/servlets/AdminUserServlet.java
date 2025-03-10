@@ -15,27 +15,26 @@ public class AdminUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        
-		 HttpSession session = request.getSession(false);
-	        if (session == null || session.getAttribute("user") == null) {
-	            response.sendRedirect("login.jsp");
-	            return;
-	        }
+	        throws ServletException, IOException {
+	    HttpSession session = request.getSession(false);
+	    if (session == null || session.getAttribute("user") == null) {
+	        response.sendRedirect("login.jsp");
+	        return;
+	    }
 
-	        User user = (User) session.getAttribute("user");
-	        if (user.getRole() != User.Role.ADMIN) {
-	            response.sendRedirect("login.jsp?error=unauthorized");
-	            return;
-	        }
+	    User user = (User) session.getAttribute("user");
+	    if (user.getRole() != User.Role.ADMIN) {
+	        response.sendRedirect("login.jsp?error=unauthorized");
+	        return;
+	    }
 
-        try {
-            UserDAO userDAO = new UserDAO();
-            request.setAttribute("allUsers", userDAO.getAllUsers());
-        } catch (Exception e) {
-            request.setAttribute("error", "Error loading users");
-        }
-        
-        request.getRequestDispatcher("/adminUserMng.jsp").forward(request, response);
-    }
+	    try {
+	        UserDAO userDAO = new UserDAO();
+	        request.setAttribute("allUsers", userDAO.getAllUsers());
+	    } catch (Exception e) {
+	        request.setAttribute("error", "Error loading users");
+	    }
+
+	    request.getRequestDispatcher("/adminUserMng.jsp").forward(request, response);
+	}
 }

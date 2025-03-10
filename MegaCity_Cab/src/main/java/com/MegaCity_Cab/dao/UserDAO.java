@@ -66,7 +66,7 @@ public class UserDAO {
                 user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase()));
                 return user;
             }
-            return null; // No user found
+            return null; 
         }
     }
 
@@ -100,5 +100,64 @@ public class UserDAO {
             e.printStackTrace();
         }
         return users;
+    }
+    
+    public User getUserById(int id) throws SQLException {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setNic(rs.getString("nic"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+                user.setPasswordHash(rs.getString("password_hash"));
+                
+                // Handle role with error checking
+                try {
+                    user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase()));
+                } catch (IllegalArgumentException e) {
+                    user.setRole(User.Role.USER); // Default to USER
+                }
+                return user;
+            }
+            return null; // No user found
+        }
+    }
+
+    public boolean updateUser(User user) throws SQLException {
+        String sql = "UPDATE users SET name=?, nic=?, phone=?, email=?, role=? WHERE id=?";
+        
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getNic());
+            stmt.setString(3, user.getPhone());
+            stmt.setString(4, user.getEmail());
+            stmt.setString(5, user.getRole().name());
+            stmt.setInt(6, user.getId());
+            
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    public boolean deleteUser(int id) throws SQLException {
+        String sql = "DELETE FROM users WHERE id = ?";
+        
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+        }
     }
 }

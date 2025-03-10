@@ -15,6 +15,16 @@
         <div id="users" class="admin-section">
             <h2>Manage Users</h2>
             
+<c:if test="${not empty param.updateSuccess}">
+    <p class="success-message">User updated successfully!</p>
+</c:if>
+<c:if test="${not empty param.deleteSuccess}">
+    <p class="success-message">User deleted successfully!</p>
+</c:if>
+<c:if test="${not empty param.error}">
+    <p class="error-message">Error: ${param.error}</p>
+</c:if>
+            
             <div class="search-box">
                 <input type="text" placeholder="Search users..." id="userSearch">
             </div>
@@ -24,6 +34,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>NIC</th>
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Role</th>
@@ -35,6 +46,7 @@
                         <tr>
                             <td><c:out value="${user.id}"/></td>
                             <td><c:out value="${user.name}"/></td>
+                            <td><c:out value="${user.nic}"/></td>
                             <td><c:out value="${user.email}"/></td>
                             <td><c:out value="${user.phone}"/></td>
                             <td><c:out value="${user.role}"/></td>
