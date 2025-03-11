@@ -1,46 +1,39 @@
-    document.addEventListener('DOMContentLoaded', function() {
-    const riderRadio = document.getElementById('rider');
-    const vehicleFields = document.getElementById('vehicleFields');
+document.addEventListener('DOMContentLoaded', function() {
+            const roleRadios = document.querySelectorAll('input[name="role"]');
+            const vehicleFields = document.getElementById('vehicleFields');
 
-    function toggleVehicleFields() {
-        const isRider = riderRadio.checked;
-        vehicleFields.classList.toggle('hidden', !isRider);
-        
-        // Toggle required attribute for vehicle fields
-        const vehicleInputs = vehicleFields.querySelectorAll('input, select');
-        vehicleInputs.forEach(input => {
-            input.required = isRider;
+            // Toggle vehicle fields based on role selection
+            roleRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const showVehicleFields = this.value === 'Rider';
+                    vehicleFields.classList.toggle('d-none', !showVehicleFields);
+                    
+                    // Toggle required attributes
+                    const vehicleInputs = vehicleFields.querySelectorAll('input, select');
+                    vehicleInputs.forEach(input => {
+                        input.required = showVehicleFields;
+                    });
+                });
+            });
+
+            // Form validation
+            const form = document.querySelector('.needs-validation');
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
         });
-    }
-
-    // Add event listeners
-    document.querySelectorAll('input[name="role"]').forEach(radio => {
-        radio.addEventListener('change', toggleVehicleFields);
-    });
-
-    // Initial check
-    toggleVehicleFields();
-});
 
 
-document.addEventListener('DOMContentLoaded', () => {
-           const modal = document.getElementById('riderModal');
-           const span = document.querySelector('.close');
-           
-           document.querySelectorAll('.show-rider-btn').forEach(btn => {
-               btn.addEventListener('click', () => {
-                   document.getElementById('modalVehicleNumber').textContent = 
-                       btn.dataset.vehicleNumber;
-                   document.getElementById('modalVehicleType').textContent = 
-                       btn.dataset.vehicleType;
-                   document.getElementById('modalPhone').textContent = 
-                       btn.dataset.phone;
-                   modal.style.display = 'block';
-               });
-           });
-
-           span.onclick = () => modal.style.display = 'none';
-           window.onclick = (event) => {
-               if (event.target === modal) modal.style.display = 'none';
-           }
-       });
+		document.addEventListener('DOMContentLoaded', function() {
+		         const riderModal = document.getElementById('riderModal');
+		         riderModal.addEventListener('show.bs.modal', function(event) {
+		             const button = event.relatedTarget;
+		             document.getElementById('modalVehicleNumber').textContent = button.dataset.vehicleNumber;
+		             document.getElementById('modalVehicleType').textContent = button.dataset.vehicleType;
+		             document.getElementById('modalPhone').textContent = button.dataset.phone;
+		         });
+		     });
