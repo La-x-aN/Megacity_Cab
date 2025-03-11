@@ -69,6 +69,6 @@
 
             <button type="submit">Register</button>
         </form>
-    </div>
+    </div>  
 </body>
 </html>

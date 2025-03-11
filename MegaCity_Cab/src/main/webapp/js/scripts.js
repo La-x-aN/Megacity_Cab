@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     const riderRadio = document.getElementById('rider');
     const vehicleFields = document.getElementById('vehicleFields');
 
@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial check
     toggleVehicleFields();
 });
-
 
 
 document.addEventListener('DOMContentLoaded', () => {
