@@ -38,3 +38,4 @@ class RiderTest {
         assertNull(rider.getPhone(), "Default Phone should be null");
     }
 }
+
