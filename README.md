@@ -49,8 +49,8 @@ MegaCity_Cab/
 
 - **Backend**: Java EE (Servlets, JDBC)
 - **Frontend**: JSP, HTML, CSS, JavaScript
-- **Database**: MySQL (or any RDBMS)
-- **Build Tool**: Maven
+- **Database**: MySQL (mysql)
+- **Build Tool**: eclipse dynamic web app
 - **Deployment**: Apache Tomcat
 
 ## 🚀 Getting Started
