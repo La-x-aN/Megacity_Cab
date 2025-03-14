@@ -53,7 +53,7 @@
                                         <div class="col-md-6">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="role" 
-                                                    id="user" value="USER" checked>
+                                                    id="user" value="User" checked>
                                                 <label class="form-check-label" for="user">
                                                     Passenger
                                                 </label>
@@ -104,6 +104,9 @@
                         <div class="col-12 mt-4">
                             <button type="submit" class="btn btn-primary w-100 py-2">Create Account</button>
                         </div>
+                        <div class="text-center mt-4">
+                    		<p class="mb-0">current user? <a href="login.jsp" class="text-decoration-none">login here</a></p>
+                		</div>
                     </div>
                 </form>
             </div>

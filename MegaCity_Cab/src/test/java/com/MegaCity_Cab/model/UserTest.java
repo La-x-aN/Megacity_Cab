@@ -15,19 +15,15 @@ class UserTest {
     void testNullRoleHandling() {
         User user = new User();
         
-        // Test null Role enum
         user.setRole(null);
         assertEquals(User.Role.USER, user.getRole(), "Null role should default to USER");
         
-        // Test null String input
         user.setRoleFromString(null);
         assertEquals(User.Role.USER, user.getRole(), "Null string should default to USER");
         
-        // Test empty string
         user.setRoleFromString("");
         assertEquals(User.Role.USER, user.getRole(), "Empty string should default to USER");
-        
-        // Test invalid string
+
         user.setRoleFromString("INVALID_ROLE");
         assertEquals(User.Role.USER, user.getRole(), "Invalid role should default to USER");
     }

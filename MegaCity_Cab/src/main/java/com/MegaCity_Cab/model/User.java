@@ -11,12 +11,12 @@ public class User {
     private String passwordHash;
     private Role role;
 
-    // Constructor
+
     public User() {
-        this.role = Role.USER; // Default role
+        this.role = Role.USER; 
     }
 
-    // Getters
+
     public int getId() { return id; }
     public String getName() { return name; }
     public String getNic() { return nic; }
@@ -25,7 +25,7 @@ public class User {
     public String getPasswordHash() { return passwordHash; }
     public Role getRole() { return role; }
 
-    // Setters
+
     public void setId(int id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setNic(String nic) { this.nic = nic; }
@@ -35,7 +35,7 @@ public class User {
         this.passwordHash = passwordHash; 
     }
 
-    // Role setters
+
     public void setRole(Role role) {
         this.role = (role != null) ? role : Role.USER;
     }

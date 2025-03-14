@@ -15,7 +15,7 @@ import com.MegaCity_Cab.model.User;
 @WebServlet("/EditUserServlet")
 public class EditUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private UserDAO userDAO;
+    protected UserDAO userDAO;
 
     @Override
     public void init() throws ServletException {

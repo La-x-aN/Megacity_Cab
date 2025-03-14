@@ -7,7 +7,6 @@ public class Rider {
     private String vehicleModel;
     private String vehicleNumber;
     private String phone;
-
    
     public int getRiderId() { return riderId; }
     public void setRiderId(int riderId) { this.riderId = riderId; }
