@@ -9,7 +9,6 @@ class RiderTest {
     void testRiderSettersAndGetters() {
         Rider rider = new Rider();
 
-        // Set values
         rider.setRiderId(1);
         rider.setUserId(101);
         rider.setVehicleType("Car");
@@ -17,7 +16,6 @@ class RiderTest {
         rider.setVehicleNumber("ABC-1234");
         rider.setPhone("0712345678");
 
-        // Validate values
         assertEquals(1, rider.getRiderId(), "Rider ID should be 1");
         assertEquals(101, rider.getUserId(), "User ID should be 101");
         assertEquals("Car", rider.getVehicleType(), "Vehicle type should be 'Car'");
