@@ -1,7 +1,3 @@
-Here's a good starting point for your `README.md` file for your GitHub repository:
-
----
-
 # 🚖 MegaCity_Cab
 
 MegaCity_Cab is a Java EE-based web application designed to manage cab services, including ride booking, user management, and authentication.
