@@ -38,7 +38,7 @@ public class RegisterServlet extends HttpServlet {
         user.setPhone(phone);
         user.setEmail(email);
         user.setPasswordHash(SecurityUtil.hashPassword(password));
-        user.setRole(role != null ? role.toUpperCase() : "USER");
+        user.setRoleFromString(role);
 
         UserDAO userDAO = new UserDAO();
         try {
