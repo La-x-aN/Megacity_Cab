@@ -28,7 +28,7 @@ class RideTest {
         ride.setStatus(Ride.Status.ASSIGNED);
         ride.setSelectedVehicle(Ride.SelectedVehicle.CAR);
 
-        // Validate values
+       
         assertEquals(1, ride.getRideId());
         assertEquals(101, ride.getUserId());
         assertEquals("Colombo", ride.getPickupLocation());

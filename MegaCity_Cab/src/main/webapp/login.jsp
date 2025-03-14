@@ -17,7 +17,7 @@
     <main class="container flex-grow-1">
         <div class="card auth-card">
             <div class="card-header auth-header">
-                <h3 class="text-center mb-0">Driver Login</h3>
+                <h3 class="text-center mb-0">Driver/User Login</h3>
             </div>
             <div class="card-body p-4">
                 <c:if test="${not empty param.error}">

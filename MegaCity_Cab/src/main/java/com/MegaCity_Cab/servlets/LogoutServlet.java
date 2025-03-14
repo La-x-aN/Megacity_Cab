@@ -30,6 +30,6 @@ public class LogoutServlet extends HttpServlet {
         response.setDateHeader("Expires", 0);
         
         // Redirect to login
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 }

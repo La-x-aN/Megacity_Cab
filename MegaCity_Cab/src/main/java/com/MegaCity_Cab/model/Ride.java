@@ -1,5 +1,4 @@
 package com.MegaCity_Cab.model;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -113,7 +112,7 @@ public class Ride {
     public void setSelectedVehicle(SelectedVehicle selectedVehicle) { this.selectedVehicle = selectedVehicle; }
     
     public boolean isEditable() {
-        return status == Status.REQUESTED; // Direct status check
+        return status == Status.REQUESTED; 
     }
 	
 }

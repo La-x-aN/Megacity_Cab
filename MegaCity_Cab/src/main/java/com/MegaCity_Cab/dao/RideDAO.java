@@ -46,7 +46,7 @@ public class RideDAO {
 	            rides.add(mapRideFromResultSet(rs));
 	        }
 	    } catch (SQLException e) {
-	        throw new Exception("Failed to fetch user rides", e); // Better error propagation
+	        throw new Exception("Failed to fetch user rides", e); 
 	    }
 	    return rides;
 	}
@@ -161,7 +161,7 @@ public class RideDAO {
 	
 	public boolean assignRider(int rideId, int riderId) throws Exception {
 	    String sql = "UPDATE rides SET assigned_rider_id = ?, status = 'ASSIGNED' " +
-	                 "WHERE ride_id = ? AND status = 'REQUESTED'"; // Updated condition
+	                 "WHERE ride_id = ? AND status = 'REQUESTED'"; 
 	    
 	    try (Connection conn = DBUtil.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(sql)) {
