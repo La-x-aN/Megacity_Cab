@@ -13,18 +13,36 @@ MegaCity_Cab is a Java EE-based web application designed to manage cab services,
 ## 🏗️ Project Structure
 
 ```
-src/main/java/com.MegaCity_Cab
-│── dao/         # Data Access Objects (DAO)
-│── filters/     # Authentication filters
-│── model/       # Entity classes
-│── servlets/    # Servlets for handling HTTP requests
-│── utils/       # Utility classes (DB connections, security)
-│
-src/main/webapp/
-│── WEB-INF/     # Configuration files
-│── admin/       # Admin pages
-│── css, js, images/ # Static assets
-│── login.jsp, register.jsp, index.jsp  # User-facing pages
+MegaCity_Cab/  
+├── Deployment Descriptor: MegaCity_Cab  
+├── src/  
+│   ├── main/  
+│   │   ├── java/  
+│   │   │   ├── com.MegaCity_Cab.dao/          # Data Access Object classes  
+│   │   │   ├── com.MegaCity_Cab.filters/      # Servlet filters  
+│   │   │   ├── com.MegaCity_Cab.model/        # Data/model classes 
+│   │   │   ├── com.MegaCity_Cab.servlets/     # Servlet controllers  
+│   │   │   └── com.MegaCity_Cab.utils/        # Utility/helper classes  
+│   │   └── webapp/  
+│   │       ├── css/                           # CSS stylesheets  
+│   │       ├── images/                        # Image assets  
+│   │       ├── js/                            # JavaScript files  
+│   │       ├── META-INF/                      # Metadata 
+│   │       ├── WEB-INF/                       # Web configuration files 
+│   │       ├── admin.jsp                      # Admin dashboard view  
+│   │       ├── adminNav.jsp                   # Admin navigation partial  
+│   │       ├── adminRiders.jsp                # Admin riders management view  
+│   │       ├── adminUserMng.jsp               # Admin user management view  
+│   │       ├── editUser.jsp                   # Edit user form  
+│   │       ├── index.jsp                      # Homepage  
+│   │       ├── login.jsp                      # Login page  
+│   │       ├── register.jsp                   # User registration page  
+│   │       ├── rider.jsp                      # Rider-specific view  
+│   │       └── user.jsp                       # General user profile view  
+│   └── test/  
+│       └── java/                              # Test classes 
+├── build/                                     # Compiled classes and build artifacts  
+└── Libraries/                                 # External dependencies   
 ```
 
 ## 🔧 Tech Stack
