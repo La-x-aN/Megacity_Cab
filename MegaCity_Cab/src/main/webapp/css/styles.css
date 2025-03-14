@@ -1,0 +1,131 @@
+/* styles.css */
+:root {
+    --primary: #2a2a72;
+    --secondary: #009ffd;
+    --success: #28a745;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #212529;
+}
+
+body {
+    background: var(--light);
+    min-height: 100vh;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.auth-card {
+    max-width: 500px;
+    margin: 2rem auto;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    border-radius: 1rem;
+}
+
+.auth-header {
+    background: var(--primary);
+    color: white;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.vehicle-type-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.vehicle-type-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+.ride-table {
+    overflow-x: auto;
+}
+
+.status-badge {
+    padding: 0.5em 0.75em;
+    border-radius: 1rem;
+}
+
+.bg-assigned {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.bg-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.driver-details-modal {
+    max-width: 400px;
+}
+
+.fare-calculator {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+}
+
+@media (max-width: 768px) {
+    .auth-card {
+        margin: 1rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+}
+
+/* Rider Specific Styles */
+.driver-vehicle-card dt {
+    font-weight: 500;
+    color: var(--primary);
+}
+
+.status-badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.85em;
+    display: inline-block;
+}
+
+.ride-actions .btn {
+    min-width: 100px;
+}
+
+/* Hover Effects */
+.table-hover tr:hover {
+    background-color: rgba(var(--primary-rgb), 0.05);
+}
+
+/* Badge Colors */
+.bg-assigned { background-color: #fff3cd; color: #856404; }
+.bg-in-progress { background-color: #cfe2ff; color: #052c65; }
+.bg-completed { background-color: #d1e7dd; color: #0f5132; }
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    .driver-vehicle-card dl {
+        font-size: 0.9rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+    
+    .status-badge {
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .ride-actions .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+}

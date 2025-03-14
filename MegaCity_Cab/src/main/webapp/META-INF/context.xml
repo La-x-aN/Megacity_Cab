@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<context>
+    <Resource name="jdbc/megacitydb" 
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxTotal="100"
+              maxIdle="30"
+              maxWaitMillis="10000"
+              username="root"
+              password="2002"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/megacitydb?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
+</context>
